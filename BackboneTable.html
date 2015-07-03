@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			table {
+				width: 500px;
+			}
+			
+			table, th, td {
+				border: 1px solid black;
+			}
+		</style>
+		<!-- dependencies -->
+		<script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.1/backbone.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.js'></script>
+		
+		<!-- templates -->
+		<script type="text/template" id='table-tmpl'>
+		</script>
+		
+		<!-- app classes -->
+		<script src='SetDelegate.js'></script>
+		<script src='CellModel.js'></script>
+		<script src='CellCollection.js'></script>
+		<script src='RowModel.js'></script>
+		<script src='RowCollection.js'></script>
+		<script src='ColumnModel.js'></script>
+		<script src='ColumnCollection.js'></script>
+		<script src='TableModel.js'></script>
+		<script src='MockData.js'></script>
+		
+		<script src='ColumnView.js'></script>
+		<script src='RowView.js'></script>
+		<script src='TableView.js'></script>
+	</head>
+	<body>
+		<script>
+			var table = new TableModel(tableData);
+			var view = new TableView({model: table});
+			$("body").append( view.render().el );
+		</script>
+	</body> 
+</html>
+	

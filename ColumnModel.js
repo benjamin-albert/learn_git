@@ -1,0 +1,1 @@
+var ColumnModel = Backbone.Model.extend({});
