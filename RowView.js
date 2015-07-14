@@ -6,9 +6,9 @@ var CellView = Marionette.ItemView.extend({
 		"column:chnage:width" : "render"
 	},
 	
-	events: {
-		"click" : "_handelClick"
-	},
+	//events: {
+		//"click" : "_handelClick"
+	//},
 	
 	template: Handlebars.compile("{{t}}"),
 	
@@ -30,9 +30,31 @@ var RowView = Marionette.CollectionView.extend({
 	tagName: "tr",
 	
 	childView: CellView,
-		
+	
+	modelEvents: {
+		"select": "hl",
+		"deselect": "cl"
+	},
+	
+	events: {
+		"click": "_click"
+	},
+	
 	initialize: function(attrs) {
 		this.collection = attrs.model.getCells();
+	},
+	
+	hl: function() {
+		this.$el.addClass("selected");
+	},
+	
+	cl: function() {
+		this.$el.removeClass("selected");
+	},
+	
+	_click: function() {
+		alert([this.model.get("id")]);
+		this.model.getTable().set({selectedRows: [this.model.get("id")]});
 	}
 });
 

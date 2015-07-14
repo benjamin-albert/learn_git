@@ -1,7 +1,27 @@
+Backbone.Collection.prototype.onEvery = function(ids) {
+	var models = [], proto = this.model.prototype, wrapper = {};
+	
+	_.each(ids, function(id) { models.push(this.get(id)); }, this);
+		
+	for (var method in proto) {
+		(function(method) {
+			wrapper[method] = function() {
+				var ar = arguments;
+				_.each(models, function(model) { 
+					model[method].apply(model, ar); 
+				});
+			};
+		}(method));
+	}
+	
+	return wrapper;
+};
+
 var TableModel = Backbone.Model.extend({
 	initialize: function(attrs) {
 		this._columns = new ColumnCollection(attrs.columns, {_table: this});
 		this._rows = new RowCollection(attrs.rows, {_table: this});
+		this.on("change:selectedRows", this.updateSelection);
 	},
 	
 	set: function(key, val, options) {
@@ -18,6 +38,12 @@ var TableModel = Backbone.Model.extend({
 		}
 		
 		Backbone.Model.prototype.set.call(this, attrs, options);
+	},
+	
+	updateSelection: function() {
+		var rows = this.getRows();
+		rows.onEvery( this.previous("selectedRows") ).trigger("deselect");
+		rows.onEvery( this.get("selectedRows") ).trigger("select");
 	},
 	
 	getColumns: function() {
