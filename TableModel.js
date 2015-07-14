@@ -18,12 +18,22 @@ Backbone.Collection.prototype.onEvery = function(ids) {
 };
 
 var TableModel = Backbone.Model.extend({
-	initialize: function(attrs) {
+	constructor: function(attrs, options) {
 		this._columns = new ColumnCollection(attrs.columns, {_table: this});
 		this._rows = new RowCollection(attrs.rows, {_table: this});
+		
+		Backbone.Model.apply(this, arguments);
+	},
+	
+	initialize: function(attrs) {
+		/*
+		this._columns = new ColumnCollection(attrs.columns, {_table: this});
+		this._rows = new RowCollection(attrs.rows, {_table: this});
+		*/
 		this.on("change:selectedRows", this.updateSelection);
 	},
 	
+	/*
 	set: function(key, val, options) {
 		var attrs = _.extend({}, boxAttrs(key, val));
 		
@@ -39,6 +49,23 @@ var TableModel = Backbone.Model.extend({
 		
 		Backbone.Model.prototype.set.call(this, attrs, options);
 	},
+	*/
+	
+	parse: function(attrs) {
+		var attrs = _.clone(attrs);
+		
+		if (attrs.columns) {
+			this.getColumns().set(attrs.columns, {parse: true});
+			delete attrs.columns;
+		}
+		
+		if (attrs.rows) {
+			this.getRows().set(attrs.rows, {parse: true});
+			delete attrs.rows;
+		}
+		
+		return attrs;
+	},
 	
 	updateSelection: function() {
 		var rows = this.getRows();
@@ -47,10 +74,10 @@ var TableModel = Backbone.Model.extend({
 	},
 	
 	getColumns: function() {
-		return this._columns || sentinel;
+		return this._columns;
 	},
 	
 	getRows: function() {
-		return this._rows || sentinel;
+		return this._rows;
 	}
 });
