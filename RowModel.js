@@ -2,10 +2,11 @@ var RowModel = Backbone.Model.extend({
 	constructor: function(attrs, options) {
 		this.collection = options.collection;
 		this._cells = new CellCollection(attrs.cells, {_table: this.getTable()});
-		Backbone.Model.call(this, attrs, options);
+		Backbone.Model.call(this, attrs);
 	},
 	
 	parse: function(attrs) {
+		console.log("dsofkspodpDSOKFSPODFK");
 		var attrs = _.clone(attrs);
 		
 		if (attrs.cells) {
