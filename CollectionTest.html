@@ -25,23 +25,16 @@
 	</head>
 	<body>
 		<script>
-			
-		//var CellModel = Backbone.Model.extend();
 		
 		var CellCollction = Backbone.Collection.extend({ 
 			model: Backbone.Model,
-			
-			//comparator: "id",
 			
 			initialize: function() {
 				this.on({"change:type": this.logChange});
 			},
 			
 			logChange: function(model) {
-				console.log(arguments);
 				this.trigger("remove", model, this, {}).trigger("add", model, this, {});
-				//this.remove(model);
-				//this.add(model.attributes);
 			}
 		});
 		
@@ -67,7 +60,7 @@
 		var cells = new CellCollction(mock);
 		
 		$(function() {
-		$(document.body).append( new CellCollctionView({collection: cells}).render().el );
+			$(document.body).append( new CellCollctionView({collection: cells}).render().el );
 		});
 		
 		</script>

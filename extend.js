@@ -55,7 +55,6 @@ var Asdf = Test.extend({
 		this.foo();
 		
 		Test.prototype.met.apply(this, arguments);
-		//this.dfmlk.met.apply(this, arguments);
 	},
 	
 	foo: function() {
@@ -71,12 +70,6 @@ tst.met();
 var bla = new Asdf();
 bla.abc = "dspfkdsopfksopdfko";
 bla.met();
-// bla.foo();
-
-/*
-alert(typeof tst.foo);
-alert(typeof bla.foo);
-*/
 
 var Qwer = Asdf.extend({
 	met: function() {
