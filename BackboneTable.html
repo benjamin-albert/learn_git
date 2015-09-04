@@ -28,6 +28,7 @@
 		</script>
 		
 		<!-- app classes -->
+
 		<script src='SetDelegate.js'></script>
 		<script src='CellModel.js'></script>
 		<script src='CellCollection.js'></script>
@@ -44,6 +45,39 @@
 	</head>
 	<body>
 		<script>
+			/*
+			var Bar = Foo.extend({
+				get: function() {
+					alert("Baz");
+				}
+			});
+
+			console.log(Bar.extend);
+			
+			var Cux = Bar.extend({
+				asdf: function() {
+					alert("ASDF");
+				}
+			});
+
+			var test = new Cux();
+			test.asdf();
+						*/
+//			var test = new Bar();
+/*
+			test.set();
+			test.get();
+*/
+			//console.log(Bar.extend);
+			
+			var $doc = $(document);
+			$doc.click(function(e) {
+				console.log("Click");
+				console.log(e);
+			});
+			
+			$doc.trigger("click");
+			
 			var table = new TableModel(tableData);
 			var view = new TableView({model: table});
 			$("body").append( view.render().el );
