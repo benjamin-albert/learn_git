@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			.foo {
+				background-color: red;
+			}
+			.bar {
+				background-color: green;
+			}
+		</style>
+		<!-- dependencies -->
+		<script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.1/backbone.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.2/backbone.marionette.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.js'></script>
+		
+		<!-- templates -->
+		<script type="text/template" id='table-tmpl'>
+			<thead id='columns' />
+			<tbody id='rows' />
+		</script>
+		
+	</head>
+	<body>
+		<script>
+			
+		//var CellModel = Backbone.Model.extend();
+		
+		var CellCollction = Backbone.Collection.extend({ 
+			model: Backbone.Model,
+			
+			//comparator: "id",
+			
+			initialize: function() {
+				this.on({"change:type": this.logChange});
+			},
+			
+			logChange: function(model) {
+				console.log(arguments);
+				this.trigger("remove", model, this, {}).trigger("add", model, this, {});
+				//this.remove(model);
+				//this.add(model.attributes);
+			}
+		});
+		
+		var FirstView = Marionette.ItemView.extend({
+			template: _.template("<%= text %>"),
+			className: "foo"
+		});
+		
+		var SecondView = FirstView.extend({
+			className: "bar"
+		});
+		
+		var CellCollctionView = Marionette.CollectionView.extend({
+			childView: function(options) {
+				var CellView = options.model.get("type") ? SecondView : FirstView;
+				
+				return new CellView(options);
+			}
+		});
+		
+		
+		var mock = [{id: 0, type: 0, text: "foo"}, {id: 1, type: 1, text: "bar"}];
+		var cells = new CellCollction(mock);
+		
+		$(function() {
+		$(document.body).append( new CellCollctionView({collection: cells}).render().el );
+		});
+		
+		</script>
+	</body> 
+</html>
+	

@@ -1,21 +1,24 @@
 var RowModel = Backbone.Model.extend({
-	initialize: function(attrs, options) {
+	constructor: function(attrs, options) {
+		this.collection = options.collection;
 		this._cells = new CellCollection(attrs.cells, {_table: this.getTable()});
+		Backbone.Model.call(this, attrs);
 	},
 	
-	set: function(key, val, options) {
-		var attrs = _.extend({}, boxAttrs(key, val));
+	parse: function(attrs) {
+		console.log("dsofkspodpDSOKFSPODFK");
+		var attrs = _.clone(attrs);
 		
 		if (attrs.cells) {
-			this.getCells().set(attrs.cells);
+			this.getCells().set(attrs.cells, {parse: true});
 			delete attrs.cells;
 		}
 		
-		Backbone.Model.prototype.set.call(this, attrs, options);
+		return attrs;
 	},
 	
 	getCells: function() {
-		return this._cells || sentinel;
+		return this._cells;
 	},
 	
 	getTable: function() {
